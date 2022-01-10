@@ -1,3 +1,4 @@
+// ** To convert certain hex values
 const hexDigits = {
   A: 10,
   B: 11,
@@ -157,7 +158,20 @@ function hexToOctal(value) {
 
 // ! ---------------------------------------------------------------------------
 
-console.log(octalToBinary(10));
-console.log(octalToDecimal(2277556310));
-console.log(decimalToOther(hexToDecimal("12FEDCC8"), 16));
-console.log(hexToOctal("F"));
+// ? Test cases ---------------------------------------------------------------------------
+
+console.log(`256 = ${decimalToOther(256, 2)}`);
+console.log(`256 = ${decimalToOther(256, 8)}`);
+console.log(`256 = ${decimalToOther(256, 16)}`);
+console.log(`256 = ${decimalToOther(256, 10)}`);
+console.log(`0b100010 = ${binaryToDecimal(100010)}`);
+console.log(`0b100010 = ${binaryToOctal(100010)}`);
+console.log(`0b100010 = ${binaryToHex(100010)}`);
+console.log(`0o100 = ${octalToDecimal(100)}`);
+console.log(`0o100 = ${octalToBinary(100)}`);
+console.log(`0o100 = ${octalToHex(100)}`);
+console.log(`0xFF = ${hexToDecimal("FF")}`);
+console.log(`0xFF = ${hexToBinary("FF")}`);
+console.log(`0xFF = ${hexToOctal("FF")}`);
+
+// ? ---------------------------------------------------------------------------
