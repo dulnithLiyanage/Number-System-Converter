@@ -25,7 +25,7 @@ function decimalToOther(decimalValue, base) {
     decimalValue = Math.floor(decimalValue / base);
 
     // Checks if a number is greater than 10 in hexadecimal
-    if (base == 16 && remainder % base > 10) {
+    if (base == 16 && remainder % base >= 10) {
       otherValue += hexDigits[remainder];
     } else {
       otherValue += remainder;
@@ -45,6 +45,10 @@ function decimalToOther(decimalValue, base) {
     otherValue = `0x${otherValue}`;
   }
 
+  if (base == 10) {
+    otherValue = otherValue;
+  }
+
   return otherValue;
 }
 
@@ -55,7 +59,13 @@ function decimalToOther(decimalValue, base) {
 function binaryToDecimal(value) {
   let binaryValue = 0;
 
-  let arr = value.toString().split("").reverse();
+  let arr = 0;
+
+  if (value.startsWith("0b")) {
+    arr = value.slice(2, value.length).split("").reverse();
+  } else {
+    arr = value.split("").reverse();
+  }
 
   for (let i = 0; i < arr.length; i++) {
     // Checks if the value is 1
@@ -80,7 +90,11 @@ function binaryToHex(value) {
 // ! Octal Functions ---------------------------------------------------------------------------
 
 function octalToDecimal(value) {
-  let arr = value.toString().split("");
+  if (value.startsWith("0o")) {
+    arr = value.slice(2, value.length).split("");
+  } else {
+    arr = value.toString().split("");
+  }
 
   let octalAsBinary = "";
   // Converts the number to Binary
@@ -114,7 +128,11 @@ function octalToHex(value) {
 // ! Hexadecimal Functions // ---------------------------------------------------------------------------
 
 function hexToDecimal(value) {
-  let arr = value.toString().split("");
+  if (value.startsWith("0x")) {
+    arr = value.slice(2, value.length).split("");
+  } else {
+    arr = value.toString().split("");
+  }
 
   // A new array which contains digits 10, 11... 15
   let valueArr = [];
@@ -158,20 +176,87 @@ function hexToOctal(value) {
 
 // ! ---------------------------------------------------------------------------
 
-// ? Test cases ---------------------------------------------------------------------------
+// ? Variables -------------------------------------------------------------------------------------------
 
-console.log(`256 = ${decimalToOther(256, 2)}`);
-console.log(`256 = ${decimalToOther(256, 8)}`);
-console.log(`256 = ${decimalToOther(256, 16)}`);
-console.log(`256 = ${decimalToOther(256, 10)}`);
-console.log(`0b100010 = ${binaryToDecimal(100010)}`);
-console.log(`0b100010 = ${binaryToOctal(100010)}`);
-console.log(`0b100010 = ${binaryToHex(100010)}`);
-console.log(`0o100 = ${octalToDecimal(100)}`);
-console.log(`0o100 = ${octalToBinary(100)}`);
-console.log(`0o100 = ${octalToHex(100)}`);
-console.log(`0xFF = ${hexToDecimal("FF")}`);
-console.log(`0xFF = ${hexToBinary("FF")}`);
-console.log(`0xFF = ${hexToOctal("FF")}`);
+let userNumber = document.querySelector("#userNumber");
+const appendButtons = document.querySelectorAll("[data-append]");
+const convertButtons = document.querySelectorAll("[data-convert]");
+const userSelection = document.querySelector(".user-selection");
+const convertedNumber = document.querySelector(".converted-number");
 
-// ? ---------------------------------------------------------------------------
+// ? ------------------------------------------------------------------------------------------------------
+
+convertButtons.forEach((element) => {
+  element.addEventListener("click", () => {
+    if (userNumber.value != null) {
+      switch (element.innerText) {
+        case "2":
+          if (userSelection.innerText.startsWith("0b")) {
+            convertedNumber.innerText = userSelection.innerText;
+          } else if (userSelection.innerText.startsWith("0o")) {
+            convertedNumber.innerText = octalToBinary(userSelection.innerText);
+          } else if (userSelection.innerText.startsWith("0x")) {
+            convertedNumber.innerText = hexToBinary(userSelection.innerText);
+          } else {
+            convertedNumber.innerText = decimalToOther(userNumber.value, 2);
+          }
+          break;
+        case "8":
+          if (userSelection.innerText.startsWith("0b")) {
+            convertedNumber.innerText = binaryToOctal(userSelection.innerText);
+          } else if (userSelection.innerText.startsWith("0o")) {
+            convertedNumber.innerText = userSelection.innerText;
+          } else if (userSelection.innerText.startsWith("0x")) {
+            convertedNumber.innerText = hexToOctal(userSelection.innerText);
+          } else {
+            convertedNumber.innerText = decimalToOther(userNumber.value, 8);
+          }
+          break;
+        case "16":
+          if (userSelection.innerText.startsWith("0b")) {
+            convertedNumber.innerText = binaryToHex(userSelection.innerText);
+          } else if (userSelection.innerText.startsWith("0o")) {
+            convertedNumber.innerText = octalToHex(userSelection.innerText);
+          } else if (userSelection.innerText.startsWith("0x")) {
+            convertedNumber.innerText = userSelection.innerText;
+          } else {
+            convertedNumber.innerText = decimalToOther(userNumber.value, 16);
+          }
+          break;
+        case "10":
+          if (userSelection.innerText.startsWith("0b")) {
+            convertedNumber.innerText = binaryToDecimal(
+              userSelection.innerText
+            );
+          } else if (userSelection.innerText.startsWith("0o")) {
+            convertedNumber.innerText = octalToDecimal(userSelection.innerText);
+          } else if (userSelection.innerText.startsWith("0x")) {
+            convertedNumber.innerText = hexToDecimal(userSelection.innerText);
+          } else {
+            convertedNumber.innerText = userSelection.innerText;
+          }
+          break;
+        default:
+          break;
+      }
+    }
+  });
+});
+
+appendButtons.forEach((element) => {
+  element.addEventListener("click", () => {
+    switch (element.innerText) {
+      case "2":
+        userSelection.innerText = `0b${userNumber.value}`;
+        break;
+      case "8":
+        userSelection.innerText = `0o${userNumber.value}`;
+        break;
+      case "16":
+        userSelection.innerText = `0x${userNumber.value}`;
+        break;
+      default:
+        userSelection.innerText = userNumber.value;
+    }
+  });
+});
