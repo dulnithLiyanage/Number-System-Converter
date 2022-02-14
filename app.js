@@ -57,6 +57,7 @@ function decimalToOther(decimalValue, base) {
 // ! Binary Functions ---------------------------------------------------------------------------
 
 function binaryToDecimal(value) {
+  // Removes the identifiers
   let binaryValue = 0;
 
   let arr = 0;
@@ -90,6 +91,7 @@ function binaryToHex(value) {
 // ! Octal Functions ---------------------------------------------------------------------------
 
 function octalToDecimal(value) {
+  // Removes the identifiers
   if (value.startsWith("0o")) {
     arr = value.slice(2, value.length).split("");
   } else {
@@ -128,6 +130,7 @@ function octalToHex(value) {
 // ! Hexadecimal Functions // ---------------------------------------------------------------------------
 
 function hexToDecimal(value) {
+  // Removes the identifiers
   if (value.startsWith("0x")) {
     arr = value.slice(2, value.length).split("");
   } else {
@@ -178,7 +181,9 @@ function hexToOctal(value) {
 
 // ? Variables -------------------------------------------------------------------------------------------
 
+// Input
 let userNumber = document.querySelector("#userNumber");
+
 const appendButtons = document.querySelectorAll("[data-append]");
 const convertButtons = document.querySelectorAll("[data-convert]");
 const userSelection = document.querySelector(".user-selection");
@@ -243,6 +248,7 @@ convertButtons.forEach((element) => {
   });
 });
 
+// Appends identifiers "0b - Binary, 0o - Octal, 0x - Hexadecimal"
 appendButtons.forEach((element) => {
   element.addEventListener("click", () => {
     switch (element.innerText) {
